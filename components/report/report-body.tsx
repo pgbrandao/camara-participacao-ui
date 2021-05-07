@@ -3,34 +3,38 @@ import useSWR from "swr";
 import { KpiVisualizacoesFicha } from "./kpi-visualizacoes-ficha";
 import { KpiVotosEnquete } from "./kpi-votos-enquete";
 import { KpiComentariosEnquete } from "./kpi-comentarios-enquete";
+import { ReportTitle } from "./report-title";
+import { ProposicaoTemasChart } from "./proposicao-temas.chart";
 
 const fetcher = url => fetch(url).then(r => r.json())
 
 const ReportBody = ({ year }) => {
   return (
     <>
-      <Heading
-        fontSize={{ base: 'xl', sm: '2xl', lg: '2xl' }}
-        py={10}
-      >
-        <Text as={'span'} pl="4">
-          Propostas legislativas
-        </Text>
-      </Heading>
+      <ReportTitle>
+        Propostas legislativas
+      </ReportTitle>
 
       <KpiVisualizacoesFicha year={year} />
 
-      <Heading
-        fontSize={{ base: 'xl', sm: '2xl', lg: '2xl' }}
-        py={10}
-      >
-        <Text as={'span'} pl="4">
-          Enquetes legislativas
-        </Text>
-      </Heading>
+      <ReportTitle>
+        Enquetes legislativas
+      </ReportTitle>
 
       <KpiVotosEnquete year={year} />
       <KpiComentariosEnquete year={year} />
+
+      <ReportTitle>
+        Notícias
+      </ReportTitle>
+
+      <Text>aaaaa</Text>
+
+      <ReportTitle>
+        Temas das proposições
+      </ReportTitle>
+
+      <ProposicaoTemasChart year={year} />
     </>
   );
 }

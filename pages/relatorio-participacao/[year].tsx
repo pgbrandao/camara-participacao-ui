@@ -1,6 +1,6 @@
 import React from "react"
 import Head from 'next/head'
-import NavBar from "../../components/nav-bar"
+import { NavBar } from "../../components/nav-bar"
 import { useRouter } from 'next/router'
 import { ReportBody } from "../../components/report/report-body"
 import {
@@ -21,7 +21,7 @@ const RelatorioParticipacao = () => {
       <Head>
         <title>A Participação na Câmara em {year}</title>
       </Head>
-      <NavBar />
+      <NavBar showReportsButton={true} />
       <Container maxW={'5xl'} py={16} as={Stack} spacing={12}>
         <Stack spacing={0} align={'center'}>
           <Heading

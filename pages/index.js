@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import NavBar from "../components/nav-bar"
+import { NavBar } from "../components/nav-bar"
 import {
   Box,
   Button,
@@ -19,7 +19,7 @@ export default function Home() {
       <Head>
         <title>A Participação na Câmara</title>
       </Head>
-      <NavBar />
+      <NavBar showReportsButton={false} />
       <Container maxW={'5xl'} py={16} as={Stack} spacing={12}>
         <Stack spacing={0} align={'center'}>
           <Heading>A Participação na Câmara</Heading>
