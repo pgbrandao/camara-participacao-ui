@@ -7,7 +7,29 @@ import { Spinner } from "@chakra-ui/spinner";
 const ThemesChart = ({ data }) => {
   const animationTrajectory = "outside";
 
-  console.log(data)
+  const groupedByTheme = data['dimension'].reduce((accumulator, currentValue) => {
+    accumulator[currentValue['proposicao__tema__nome']] = accumulator[currentValue['proposicao__tema__nome']] || []
+    accumulator[currentValue['proposicao__tema__nome']].push(currentValue)
+
+    return accumulator
+  }, {})
+
+  const themesCount = data['dimension'].reduce((accumulator, currentValue) => {
+    const theme = currentValue['proposicao__tema__nome']
+
+    accumulator[theme] = accumulator[theme] || 0
+    accumulator[theme] += currentValue['ficha_pageviews']
+
+    return accumulator
+  }, {})
+
+  const themesCountArray = Object.keys(themesCount).map((key) => { return {'proposicao__tema__nome': key, 'ficha_pageviews': themesCount[key]}})
+
+  const sortedThemesCountArray = themesCountArray.sort((first, second) => {
+    return second['ficha_pageviews'] - first['ficha_pageviews']
+  })
+
+  console.log(sortedThemesCountArray)
   return (
     <XYChart
       theme={lightTheme}
@@ -29,6 +51,18 @@ const ThemesChart = ({ data }) => {
       <BarStack
         offset="expand"
       >
+        {sortedThemesCountArray.map((t) => {
+          const theme = t['proposicao__tema__nome'];
+
+          return (
+            <BarSeries
+              dataKey={theme}
+              data={groupedByTheme[theme]}
+              xAccessor={(t) => t["date"]}
+              yAccessor={(t) => t["ficha_pageviews"]}
+          />
+          );
+        })}
       </BarStack>
       {/* <Axis
         key={`time-axis-${animationTrajectory}`}

@@ -16,6 +16,8 @@ const RelatorioParticipacao = () => {
   const router = useRouter();
   const { year } = router.query;
 
+  if (!year) return (<></>)
+
   return (
     <>
       <Head>
