@@ -1,17 +1,27 @@
 import { XYChart, BarSeries, BarStack, lightTheme, Axis, Grid, Tooltip } from "@visx/xychart";
 import { timeParse, timeFormat, timeFormatDefaultLocale } from 'd3-time-format';
+import { scaleOrdinal } from "@visx/scale";
+import { schemeSet1 } from 'd3-scale-chromatic';
 
 import useSWR from "swr"
-import { Center } from "@chakra-ui/layout";
+import { Center, HStack, Text } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
 import * as locale from './d3/pt-BR-locale.json';
 
 const ThemesChart = ({ data }) => {
   const animationTrajectory = "outside";
+  const legendGlyphSize = 15;
 
   const groupedByTheme = data['dimension'].reduce((accumulator, currentValue) => {
     accumulator[currentValue['proposicao__tema__nome']] = accumulator[currentValue['proposicao__tema__nome']] || []
     accumulator[currentValue['proposicao__tema__nome']].push(currentValue)
+
+    return accumulator
+  }, {})
+
+  const totalByDate = data['dimension'].reduce((accumulator, currentValue) => {
+    accumulator[currentValue['date']] = accumulator[currentValue['date']] || 0
+    accumulator[currentValue['date']] += currentValue['ficha_pageviews']
 
     return accumulator
   }, {})
@@ -35,8 +45,15 @@ const ThemesChart = ({ data }) => {
   const parseDate = timeParse('%Y-%m-%dT%H:%M:%S');
   const format = timeFormat('%b %Y');  
   const formatDate = (date: string) => format(parseDate(date) as Date);
-  const formatPercentage = (percentage: number) => (percentage*100).toFixed(0);
+  const formatPercentage = (percentage: number) => String((percentage*100).toFixed(0)) + " %";
+  const formatPercentagePrecise = (percentage: number) => String((percentage*100).toFixed(2)) + " %";
 
+  const sourceColorSet = schemeSet1
+  const numberOfKeys = Object.keys(themesCount).length
+  const slicedColors = sourceColorSet.slice(0, sourceColorSet.length-1)
+  const extraColors = Array(numberOfKeys - slicedColors.length).fill(sourceColorSet[sourceColorSet.length-1])
+  console.log(slicedColors.concat(extraColors))
+  lightTheme.colors = slicedColors.concat(extraColors)
   return (
     <XYChart
       theme={lightTheme}
@@ -63,6 +80,7 @@ const ThemesChart = ({ data }) => {
 
           return (
             <BarSeries
+              
               dataKey={theme}
               data={groupedByTheme[theme]}
               xAccessor={(t) => t["date"]}
@@ -86,10 +104,10 @@ const ThemesChart = ({ data }) => {
         numTicks={3}
         tickFormat={formatPercentage}
       />
-      {/* <Tooltip
+      <Tooltip
         // <Tooltip<CityTemperature>
         showHorizontalCrosshair={false}
-        showVerticalCrosshair={true}
+        showVerticalCrosshair={false}
         snapTooltipToDatumX={true}
         snapTooltipToDatumY={true}
         showDatumGlyph={true
@@ -102,33 +120,29 @@ const ThemesChart = ({ data }) => {
           if (nearestDatum.datum) {
             return (
               <>
-                {nearestDatum.datum['sampledDate']}
+                {formatDate(nearestDatum.datum['date'])}
                 <br />
                 <br />
-                {Object.entries(nearestDatum.datum['allocation']).map(([key, value]) => {
-                  return (
-                    // TODO: what should the key here be?
-                    <div key={key}>
-                      <em
-                        style={{
-                          color: colorScale?.(key),
-                          textDecoration:
-                            nearestDatum.key === key ? 'underline' : undefined,
-                        }}
-                      >
-                        {`${key}`}
-                      </em>
-                      {' '}
-                      {`US$ ${Number(value).toFixed(2)}`}
-                      <br />
-                    </div>
-                  )
-                })}
+                <HStack>
+                  <svg width={legendGlyphSize} height={legendGlyphSize} style={{ margin: '2px 0' }}>
+                    <circle
+                      fill={colorScale(nearestDatum.key)}
+                      r={legendGlyphSize / 2}
+                      cx={legendGlyphSize / 2}
+                      cy={legendGlyphSize / 2}
+                    />
+                  </svg>
+                  <Text>
+                    {`${nearestDatum.datum['proposicao__tema__nome']}`}:
+                    {' '}
+                    <i>{formatPercentagePrecise(nearestDatum.datum['ficha_pageviews'] / totalByDate[nearestDatum.datum['date']])}</i>
+                  </Text>
+                </HStack>
               </>
             )
           }
         }}
-      /> */}
+      />
     </XYChart>
   );
 };
