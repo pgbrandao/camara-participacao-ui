@@ -1,8 +1,10 @@
 import { XYChart, BarSeries, BarStack, lightTheme, Axis, Grid, Tooltip } from "@visx/xychart";
+import { timeParse, timeFormat, timeFormatDefaultLocale } from 'd3-time-format';
 
 import useSWR from "swr"
 import { Center } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
+import * as locale from './d3/pt-BR-locale.json';
 
 const ThemesChart = ({ data }) => {
   const animationTrajectory = "outside";
@@ -29,7 +31,12 @@ const ThemesChart = ({ data }) => {
     return second['ficha_pageviews'] - first['ficha_pageviews']
   })
 
-  console.log(sortedThemesCountArray)
+  timeFormatDefaultLocale(locale);
+  const parseDate = timeParse('%Y-%m-%dT%H:%M:%S');
+  const format = timeFormat('%b %Y');  
+  const formatDate = (date: string) => format(parseDate(date) as Date);
+  const formatPercentage = (percentage: number) => (percentage*100).toFixed(0);
+
   return (
     <XYChart
       theme={lightTheme}
@@ -64,22 +71,22 @@ const ThemesChart = ({ data }) => {
           );
         })}
       </BarStack>
-      {/* <Axis
+      <Axis
         key={`time-axis-${animationTrajectory}`}
         orientation="bottom"
         // numTicks={4}
         rangePadding={5}
         // tickFormat={stackOffset === "wiggle" ? () => "" : undefined}
-        tickFormat={undefined}
+        tickFormat={formatDate}
       />
       <Axis
         key={`temp-axis-${animationTrajectory}`}
-        label={"Price per quota (US$)"}
+        label={"Percentual"}
         orientation={"left"}
-        numTicks={4}
-        // values don't make sense in stream graph
+        numTicks={3}
+        tickFormat={formatPercentage}
       />
-      <Tooltip
+      {/* <Tooltip
         // <Tooltip<CityTemperature>
         showHorizontalCrosshair={false}
         showVerticalCrosshair={true}
