@@ -1,36 +1,35 @@
 import { XYChart, BarSeries, BarStack, lightTheme, Axis, Grid, Tooltip } from "@visx/xychart";
 import { timeParse, timeFormat, timeFormatDefaultLocale } from 'd3-time-format';
-import { scaleOrdinal } from "@visx/scale";
-import { schemeSet1 } from 'd3-scale-chromatic';
+import { schemeTableau10 } from 'd3-scale-chromatic';
 
+import { formatPercentagePrecise, formatPercentage} from './formattedNumber'
 import useSWR from "swr"
 import { Center, HStack, Text } from "@chakra-ui/layout";
-import { Spinner } from "@chakra-ui/spinner";
 import * as locale from './d3/pt-BR-locale.json';
 
-const ThemesChart = ({ data }) => {
+const ThemesChart = ({ data, dateAccessor, dimensionAccessor, metricAccessor }) => {
   const animationTrajectory = "outside";
   const legendGlyphSize = 15;
 
   const groupedByTheme = data['dimension'].reduce((accumulator, currentValue) => {
-    accumulator[currentValue['proposicao__tema__nome']] = accumulator[currentValue['proposicao__tema__nome']] || []
-    accumulator[currentValue['proposicao__tema__nome']].push(currentValue)
+    accumulator[dimensionAccessor(currentValue)] = accumulator[dimensionAccessor(currentValue)] || []
+    accumulator[dimensionAccessor(currentValue)].push(currentValue)
 
     return accumulator
   }, {})
 
   const totalByDate = data['dimension'].reduce((accumulator, currentValue) => {
-    accumulator[currentValue['date']] = accumulator[currentValue['date']] || 0
-    accumulator[currentValue['date']] += currentValue['ficha_pageviews']
+    accumulator[dateAccessor(currentValue)] = accumulator[dateAccessor(currentValue)] || 0
+    accumulator[dateAccessor(currentValue)] += metricAccessor(currentValue)
 
     return accumulator
   }, {})
 
   const themesCount = data['dimension'].reduce((accumulator, currentValue) => {
-    const theme = currentValue['proposicao__tema__nome']
+    const theme = dimensionAccessor(currentValue)
 
     accumulator[theme] = accumulator[theme] || 0
-    accumulator[theme] += currentValue['ficha_pageviews']
+    accumulator[theme] += metricAccessor(currentValue)
 
     return accumulator
   }, {})
@@ -38,21 +37,19 @@ const ThemesChart = ({ data }) => {
   const themesCountArray = Object.keys(themesCount).map((key) => { return {'proposicao__tema__nome': key, 'ficha_pageviews': themesCount[key]}})
 
   const sortedThemesCountArray = themesCountArray.sort((first, second) => {
-    return second['ficha_pageviews'] - first['ficha_pageviews']
+    return metricAccessor(second) - metricAccessor(first)
   })
 
   timeFormatDefaultLocale(locale);
   const parseDate = timeParse('%Y-%m-%dT%H:%M:%S');
   const format = timeFormat('%b %Y');  
   const formatDate = (date: string) => format(parseDate(date) as Date);
-  const formatPercentage = (percentage: number) => String((percentage*100).toFixed(0)) + " %";
-  const formatPercentagePrecise = (percentage: number) => String((percentage*100).toFixed(2)) + " %";
 
-  const sourceColorSet = schemeSet1
+  const sourceColorSet = schemeTableau10
   const numberOfKeys = Object.keys(themesCount).length
   const slicedColors = sourceColorSet.slice(0, sourceColorSet.length-1)
   const extraColors = Array(numberOfKeys - slicedColors.length).fill(sourceColorSet[sourceColorSet.length-1])
-  console.log(slicedColors.concat(extraColors))
+
   lightTheme.colors = slicedColors.concat(extraColors)
   return (
     <XYChart
@@ -99,7 +96,6 @@ const ThemesChart = ({ data }) => {
       />
       <Axis
         key={`temp-axis-${animationTrajectory}`}
-        label={"Percentual"}
         orientation={"left"}
         numTicks={3}
         tickFormat={formatPercentage}
@@ -120,7 +116,7 @@ const ThemesChart = ({ data }) => {
           if (nearestDatum.datum) {
             return (
               <>
-                {formatDate(nearestDatum.datum['date'])}
+                {formatDate(dateAccessor(nearestDatum.datum))}
                 <br />
                 <br />
                 <HStack>

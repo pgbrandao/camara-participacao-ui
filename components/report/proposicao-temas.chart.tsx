@@ -11,7 +11,13 @@ const ProposicaoTemasChart = ({ year }) => {
 
   return (
     <>
-      {data ? <ThemesChart data={data['proposicoes_temas']} /> : <Skeleton height="20px" />}
+      {data ?
+        <ThemesChart
+          data={data['proposicoes_temas']}
+          dateAccessor={(d) => d['date']}
+          dimensionAccessor={(d) => d['proposicao__tema__nome']}
+          metricAccessor={(d) => d['ficha_pageviews']}
+        /> : <Skeleton height="20px" />}
     </>
   );
 }
