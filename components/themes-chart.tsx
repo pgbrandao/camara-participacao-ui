@@ -34,10 +34,10 @@ const ThemesChart = ({ data, dateAccessor, dimensionAccessor, metricAccessor }) 
     return accumulator
   }, {})
 
-  const themesCountArray = Object.keys(themesCount).map((key) => { return {'proposicao__tema__nome': key, 'ficha_pageviews': themesCount[key]}})
+  const themesCountArray = Object.keys(themesCount).map((key) => { return {'dimension': key, 'metric': themesCount[key]}})
 
   const sortedThemesCountArray = themesCountArray.sort((first, second) => {
-    return metricAccessor(second) - metricAccessor(first)
+    return second['metric'] - first['metric']
   })
 
   timeFormatDefaultLocale(locale);
@@ -73,15 +73,15 @@ const ThemesChart = ({ data, dateAccessor, dimensionAccessor, metricAccessor }) 
         offset="expand"
       >
         {sortedThemesCountArray.map((t) => {
-          const theme = t['proposicao__tema__nome'];
+          const theme = t['dimension'];
 
           return (
             <BarSeries
               
               dataKey={theme}
               data={groupedByTheme[theme]}
-              xAccessor={(t) => t["date"]}
-              yAccessor={(t) => t["ficha_pageviews"]}
+              xAccessor={(t) => dateAccessor(t)}
+              yAccessor={(t) => metricAccessor(t)}
           />
           );
         })}
@@ -129,9 +129,9 @@ const ThemesChart = ({ data, dateAccessor, dimensionAccessor, metricAccessor }) 
                     />
                   </svg>
                   <Text>
-                    {`${nearestDatum.datum['proposicao__tema__nome']}`}:
+                    {`${dimensionAccessor(nearestDatum.datum)}`}:
                     {' '}
-                    <i>{formatPercentagePrecise(nearestDatum.datum['ficha_pageviews'] / totalByDate[nearestDatum.datum['date']])}</i>
+                    <i>{formatPercentagePrecise(metricAccessor(nearestDatum.datum) / totalByDate[dateAccessor(nearestDatum.datum)])}</i>
                   </Text>
                 </HStack>
               </>
