@@ -8,6 +8,7 @@ import { ProposicaoTemasChart } from "./proposicao-temas-chart";
 import { NoticiaTemasChart } from "./noticias-temas-chart";
 import { EnquetesTemasChart } from "./enquetes-temas-chart";
 import { ReportIntroduction } from "./report-introduction";
+import { PrismaAssuntosProposicao } from "./prisma-assuntos-proposicao";
 
 const fetcher = url => fetch(url).then(r => r.json())
 
@@ -45,7 +46,11 @@ const ReportBody = ({ year }) => {
 
         <NoticiaTemasChart year={year} />
 
+        <ReportTitle>
+          Central de Comunicação Interativa
+        </ReportTitle>
 
+        <PrismaAssuntosProposicao year={year} />
       </Box>
     </>
   );

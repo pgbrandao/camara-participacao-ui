@@ -1,4 +1,4 @@
-import { ThemesChart } from "../themes-chart"
+import { ThemesChart } from "./themes-chart"
 import { Skeleton } from "@chakra-ui/skeleton";
 import useSWR from "swr";
 

@@ -2,10 +2,10 @@ import { XYChart, BarSeries, BarStack, lightTheme, Axis, Grid, Tooltip } from "@
 import { timeParse, timeFormat, timeFormatDefaultLocale } from 'd3-time-format';
 import { schemeTableau10 } from 'd3-scale-chromatic';
 
-import { formatPercentagePrecise, formatPercentage} from './formattedNumber'
+import { formatPercentagePrecise, formatPercentage} from '../formattedNumber'
 import useSWR from "swr"
 import { Center, HStack, Text } from "@chakra-ui/layout";
-import * as locale from './d3/pt-BR-locale.json';
+import * as locale from '../d3/pt-BR-locale.json';
 
 const ThemesChart = ({ data, dateAccessor, dimensionAccessor, metricAccessor }) => {
   const animationTrajectory = "outside";
