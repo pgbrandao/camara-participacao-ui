@@ -4,7 +4,7 @@ import useSWR from "swr";
 
 const fetcher = url => fetch(url).then(r => r.json())
 
-const ProposicaoTemasChart = ({ year }) => {
+export const EnquetesTemasChart = ({ year }) => {
   const { data, error } = useSWR(`http://midias.camara.leg.br/painel-participacao/relatorio-consolidado/?year=${year}`, fetcher);
 
   if (error) return <div>Erro ao carregar.</div>
@@ -13,13 +13,11 @@ const ProposicaoTemasChart = ({ year }) => {
     <>
       {data ?
         <ThemesChart
-          data={data['proposicoes_temas']}
+          data={data['enquetes_temas']}
           dateAccessor={(d) => d['date']}
           dimensionAccessor={(d) => d['proposicao__tema__nome']}
-          metricAccessor={(d) => d['ficha_pageviews']}
+          metricAccessor={(d) => d['poll_votes']}
         /> : <Skeleton height="20px" />}
     </>
   );
 }
-
-export { ProposicaoTemasChart }

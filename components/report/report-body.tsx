@@ -1,40 +1,52 @@
-import { Heading, Stack, Text } from "@chakra-ui/layout";
+import { Box, Heading, Stack, Text } from "@chakra-ui/layout";
 import useSWR from "swr";
 import { KpiVisualizacoesFicha } from "./kpi-visualizacoes-ficha";
 import { KpiVotosEnquete } from "./kpi-votos-enquete";
 import { KpiComentariosEnquete } from "./kpi-comentarios-enquete";
 import { ReportTitle } from "./report-title";
-import { ProposicaoTemasChart } from "./proposicao-temas.chart";
+import { ProposicaoTemasChart } from "./proposicao-temas-chart";
+import { NoticiaTemasChart } from "./noticias-temas-chart";
+import { EnquetesTemasChart } from "./enquetes-temas-chart";
+import { ReportIntroduction } from "./report-introduction";
 
 const fetcher = url => fetch(url).then(r => r.json())
 
 const ReportBody = ({ year }) => {
   return (
     <>
-      <ReportTitle>
-        Propostas legislativas
-      </ReportTitle>
+      <Box>
+        <ReportIntroduction year={year} />
+        <ReportTitle>
+          Propostas legislativas
+        </ReportTitle>
 
-      <KpiVisualizacoesFicha year={year} />
+        <KpiVisualizacoesFicha year={year} />
 
-      <ReportTitle>
-        Enquetes legislativas
-      </ReportTitle>
+        <ReportTitle>
+          Temas das proposições
+        </ReportTitle>
 
-      <KpiVotosEnquete year={year} />
-      <KpiComentariosEnquete year={year} />
+        <ProposicaoTemasChart year={year} />
 
-      <ReportTitle>
-        Notícias
-      </ReportTitle>
+        <ReportTitle>
+          Enquetes legislativas
+        </ReportTitle>
 
-      <Text>aaaaa</Text>
+        <EnquetesTemasChart year={year} />
 
-      <ReportTitle>
-        Temas das proposições
-      </ReportTitle>
+        <KpiVotosEnquete year={year} />
+        <KpiComentariosEnquete year={year} />
 
-      <ProposicaoTemasChart year={year} />
+        <ReportTitle>
+          Notícias
+        </ReportTitle>
+
+        <Text>aaaaa</Text>
+
+        <NoticiaTemasChart year={year} />
+
+
+      </Box>
     </>
   );
 }

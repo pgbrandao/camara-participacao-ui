@@ -31,7 +31,7 @@ const KpiVisualizacoesFicha = ({ year }) => {
             fontWeight="semibold"
             href="#"
           >
-            Acessos às ficha de tramitação
+            Acessos à ficha de tramitação
           </Link>
           <Text mt={2} color="gray.500">
             Cada proposta legislativa tem uma página própria no portal.

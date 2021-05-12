@@ -27,7 +27,6 @@ const ThemesChart = ({ data, dateAccessor, dimensionAccessor, metricAccessor }) 
 
   const themesCount = data['dimension'].reduce((accumulator, currentValue) => {
     const theme = dimensionAccessor(currentValue)
-
     accumulator[theme] = accumulator[theme] || 0
     accumulator[theme] += metricAccessor(currentValue)
 
