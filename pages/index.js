@@ -25,9 +25,9 @@ export default function Home() {
           <Heading>A Participação na Câmara</Heading>
           <Box h="70"></Box>
           <Stack direction="row" spacing={4} align="center">
-            {years.map((year) => {
+            {years.map((year, index) => {
               return (
-                <Link href={`/relatorio-participacao/${year}`}>
+                <Link href={`/relatorio-participacao/${year}`} key={index}>
                   <Button 
                     variant="solid"
                     px="40px"

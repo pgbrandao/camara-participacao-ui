@@ -1,8 +1,8 @@
 import React from "react"
 import Head from 'next/head'
-import { NavBar } from "../../components/nav-bar"
+import { NavBar } from "../components/nav-bar"
 import { useRouter } from 'next/router'
-import { ReportBody } from "../../components/report/report-body"
+import { ReportBody } from "../components/report/report-body"
 import {
   Heading,
   Button,
