@@ -27,7 +27,7 @@ export default function Home() {
           <Stack direction="row" spacing={4} align="center">
             {years.map((year, index) => {
               return (
-                <Link href={`/relatorio-participacao/${year}`} key={index}>
+                <Link href={`/relatorios-participacao/${year}`} key={index}>
                   <Button 
                     variant="solid"
                     px="40px"

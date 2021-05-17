@@ -16,7 +16,7 @@ const NavBar = ({ showReportsButton }) => {
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <HStack spacing={8} alignItems={'center'}>
             <Link href='https://camara.leg.br/'>
-              <Image src="/relatorio-participacao/logo-brand-camara-desktop.png" />
+              <Image src="/relatorios-participacao/logo-brand-camara-desktop.png" />
             </Link>
             <HStack
               as={'nav'}
