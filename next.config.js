@@ -1,3 +1,3 @@
 module.exports = {
-  basePath: '/relatorio-participacao',
+  basePath: '/relatorios-participacao',
 }
