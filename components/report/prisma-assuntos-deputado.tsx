@@ -5,7 +5,7 @@ import { ReportSubTitle } from "./report-subtitle";
 
 const fetcher = url => fetch(url).then(r => r.json())
 
-export const PrismaAssuntosProposicao = ({ year }) => {
+export const PrismaAssuntoDeputado = ({ year }) => {
   const { data, error } = useSWR(`http://midias.camara.leg.br/painel-participacao/relatorio-consolidado/?year=${year}`, fetcher);
 
   const columns = [
@@ -25,9 +25,9 @@ export const PrismaAssuntosProposicao = ({ year }) => {
   return (
     <>
       <PrismaTable
-        data={data ? data['prisma_assuntos_proposicao'] : data}
+        data={data ? data['prisma_assuntos_deputado'] : data}
         columns={columns}
-        title="Proposições"
+        title="Deputados"
       />
     </>
   );

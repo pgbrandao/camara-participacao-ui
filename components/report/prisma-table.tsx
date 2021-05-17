@@ -3,8 +3,11 @@ import { useTable, usePagination } from 'react-table'
 
 import _ from "lodash"
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
+import { Box, Center, Heading, Text, VStack } from '@chakra-ui/layout'
+import { Button } from '@chakra-ui/button'
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 
-export function PrismaTable({ data, columns }) {
+export function PrismaTable({ data, columns, title }) {
   const tableData = useMemo(
     () => {
       return data ? data : _.times(6, _.constant({}))
@@ -42,7 +45,7 @@ export function PrismaTable({ data, columns }) {
     {
       columns: tableColumns,
       data: tableData,
-      initialState: { pageIndex: 2 },
+      initialState: { pageIndex: 0, pageSize: 5 },
     },
     usePagination
   )
@@ -50,6 +53,13 @@ export function PrismaTable({ data, columns }) {
   // Render the UI for your table
   return (
     <>
+      <Heading
+          fontSize={{ base: 'lg', sm: 'xl', lg: 'xl' }}
+          h={50}
+          textAlign='center'
+        >
+            {title}
+      </Heading>
       <Table {...getTableProps()}>
         <Thead>
           {headerGroups.map(headerGroup => (
@@ -66,7 +76,9 @@ export function PrismaTable({ data, columns }) {
             return (
               <Tr {...row.getRowProps()}>
                 {row.cells.map(cell => {
-                  return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>
+                  return <Td {...cell.getCellProps()}>
+                        {cell.render('Cell')}
+                      </Td>
                 })}
               </Tr>
             )
@@ -77,7 +89,23 @@ export function PrismaTable({ data, columns }) {
         Pagination can be built however you'd like. 
         This is just a very basic UI implementation:
       */}
-      <div className="pagination">
+      <VStack spacing={5} py={5}>
+        <Center>
+          <Button onClick={() => previousPage()} disabled={!canPreviousPage}>
+            <FaArrowLeft />
+          </Button>
+          <Button onClick={() => nextPage()} disabled={!canNextPage}>
+            <FaArrowRight />
+          </Button>
+        </Center>
+        <Text>
+          Página{' '}
+          <strong>
+            {pageIndex + 1} de {pageOptions.length}
+          </strong>
+        </Text>
+      </VStack>
+      {/* <div className="pagination">
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {'<<'}
         </button>{' '}
@@ -96,7 +124,7 @@ export function PrismaTable({ data, columns }) {
             {pageIndex + 1} de {pageOptions.length}
           </strong>{' '}
         </span>
-      </div>
+      </div> */}
     </>
   )
 }
