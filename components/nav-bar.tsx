@@ -26,7 +26,7 @@ const NavBar = ({ showReportsButton }) => {
           </HStack>
           <Flex alignItems={'center'}>
             {showReportsButton ? (
-              <Link href='/'>
+              <Link href='/relatorios-participacao'>
                 <Button>
                   Ver outros relatórios
                 </Button>
