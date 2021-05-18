@@ -13,6 +13,7 @@ import { PrismaAssuntosLegislacao } from "./prisma-assuntos-legislacao";
 import { PrismaAssuntosTemasDeDebateNacional } from "./prisma-assuntos-temas-de-debate-nacional";
 import { PrismaAssuntoDeputado } from "./prisma-assuntos-deputado";
 import { PrismaAssuntosAtividadeLegislativa } from "./prisma-assuntos-atividade-legislativa";
+import { ProposicaoTimelineChart } from "./proposicao-timeline-chart";
 
 const fetcher = url => fetch(url).then(r => r.json())
 
@@ -24,6 +25,8 @@ const ReportBody = ({ year }) => {
         <ReportTitle>
           Propostas legislativas
         </ReportTitle>
+
+        <ProposicaoTimelineChart year={year} />
 
         <KpiVisualizacoesFicha year={year} />
 
