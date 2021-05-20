@@ -88,10 +88,18 @@ const ThemesChart = ({ data, dateAccessor, dimensionAccessor, metricAccessor }) 
       <Axis
         key={`time-axis-${animationTrajectory}`}
         orientation="bottom"
-        // numTicks={4}
+        // numTicks={2}
         rangePadding={5}
         // tickFormat={stackOffset === "wiggle" ? () => "" : undefined}
-        tickFormat={formatDate}
+        tickFormat={(date: string) => {
+          const d = parseDate(date) as Date;
+          const month = d.getMonth();
+          if (month == 0 || month == 11) {
+            return format(d);
+          } else {
+            return "";
+          }
+        }}
       />
       <Axis
         key={`temp-axis-${animationTrajectory}`}
