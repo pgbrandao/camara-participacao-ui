@@ -31,7 +31,7 @@ const ReportBody = ({ year }) => {
         <KpiVisualizacoesFicha year={year} />
 
         <ReportTitle>
-          Temas das proposições
+          Proposições
         </ReportTitle>
 
         <ProposicaoTemasChart year={year} />
