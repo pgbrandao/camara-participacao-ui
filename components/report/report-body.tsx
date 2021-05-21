@@ -14,6 +14,7 @@ import { PrismaAssuntosTemasDeDebateNacional } from "./prisma-assuntos-temas-de-
 import { PrismaAssuntoDeputado } from "./prisma-assuntos-deputado";
 import { PrismaAssuntosAtividadeLegislativa } from "./prisma-assuntos-atividade-legislativa";
 import { ProposicaoTimelineChart } from "./proposicao-timeline-chart";
+import { EnqueteTimelineChart } from "./enquete-timeline-chart";
 import { FeatureHeader } from "./feature";
 import Icon from "@chakra-ui/icon";
 import { FaNewspaper, FaPenFancy, FaVoteYea } from "react-icons/fa";
@@ -47,9 +48,7 @@ const ReportBody = ({ year }) => {
         />
 
 
-        <ReportTitle>
-          Enquetes legislativas
-        </ReportTitle>
+        <EnqueteTimelineChart year={year} />
 
         <EnqueteTemasChart year={year} />
 

@@ -7,7 +7,7 @@ import useSWR from "swr"
 import { Center, HStack, Text } from "@chakra-ui/layout";
 import * as locale from '../d3/pt-BR-locale.json';
 
-export const TimelineChart = ({ data, label, dateAccessor, metricAccessor }) => {
+export const TimelineChart = ({ data, dateAccessor, metrics }) => {
   const animationTrajectory = "outside";
   const legendGlyphSize = 15;
 
@@ -26,7 +26,7 @@ export const TimelineChart = ({ data, label, dateAccessor, metricAccessor }) => 
       theme={lightTheme}
       xScale={{ type: "band", paddingInner: 0.3 }}
       yScale={{ type: "linear" }}
-      height={180}
+      height={220}
       captureEvents={true}
       // onPointerUp={(d) => {
       //   setAnnotationDataKey(d.key as City);
@@ -34,12 +34,15 @@ export const TimelineChart = ({ data, label, dateAccessor, metricAccessor }) => 
       // }}
     >
       <>
-        <AreaSeries
-          dataKey={"Key"}
-          data={data}
-          xAccessor={(t) => dateAccessor(t)}
-          yAccessor={(t) => metricAccessor(t)}
-        />
+        {metrics.map((metric) => {
+          return (<AreaSeries
+            dataKey={metric.label}
+            data={data}
+            xAccessor={(t) => dateAccessor(t)}
+            yAccessor={(t) => metric.accessor(t)}
+            fillOpacity={0.4}
+          />)
+        })}
       </>
       <Axis
         key={`time-axis-${animationTrajectory}`}
@@ -75,18 +78,25 @@ export const TimelineChart = ({ data, label, dateAccessor, metricAccessor }) => 
                 <br />
                 <br />
                 <HStack>
-                  <svg width={legendGlyphSize} height={legendGlyphSize} style={{ margin: '2px 0' }}>
-                    <circle
-                      fill={colorScale(nearestDatum.key)}
-                      r={legendGlyphSize / 2}
-                      cx={legendGlyphSize / 2}
-                      cy={legendGlyphSize / 2}
-                    />
-                  </svg>
                   <Text>
-                    {`${label}`}:
-                    {' '}
-                    <i>{formattedNumber(metricAccessor(nearestDatum.datum))}</i>
+                    {metrics.map((metric) => {
+                      return (
+                      <>
+                        <HStack>
+                          <svg width={legendGlyphSize} height={legendGlyphSize} style={{ margin: '2px 0' }}>
+                            <circle
+                              fill={colorScale(metric.label)}
+                              r={legendGlyphSize / 2}
+                              cx={legendGlyphSize / 2}
+                              cy={legendGlyphSize / 2}
+                              />
+                          </svg>
+                          <b>{metric.label}{`:`} </b>
+                          <i>{formattedNumber(metric.accessor(nearestDatum.datum))}</i>
+                          <br />
+                        </HStack>
+                      </>)
+                    })}
                   </Text>
                 </HStack>
               </>
