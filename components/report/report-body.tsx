@@ -5,8 +5,8 @@ import { KpiVotosEnquete } from "./kpi-votos-enquete";
 import { KpiComentariosEnquete } from "./kpi-comentarios-enquete";
 import { ReportTitle } from "./report-title";
 import { ProposicaoTemasChart } from "./proposicao-temas-chart";
-import { NoticiaTemasChart } from "./noticias-temas-chart";
-import { EnquetesTemasChart } from "./enquetes-temas-chart";
+import { NoticiaTemasChart } from "./noticia-temas-chart";
+import { EnqueteTemasChart } from "./enquete-temas-chart";
 import { ReportIntroduction } from "./report-introduction";
 import { PrismaAssuntosProposicao } from "./prisma-assuntos-proposicao";
 import { PrismaAssuntosLegislacao } from "./prisma-assuntos-legislacao";
@@ -40,7 +40,7 @@ const ReportBody = ({ year }) => {
           Enquetes legislativas
         </ReportTitle>
 
-        <EnquetesTemasChart year={year} />
+        <EnqueteTemasChart year={year} />
 
         <KpiVotosEnquete year={year} />
         <KpiComentariosEnquete year={year} />
@@ -48,8 +48,6 @@ const ReportBody = ({ year }) => {
         <ReportTitle>
           Notícias
         </ReportTitle>
-
-        <Text>aaaaa</Text>
 
         <NoticiaTemasChart year={year} />
 

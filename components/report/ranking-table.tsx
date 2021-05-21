@@ -11,7 +11,7 @@ import { timeFormat } from 'd3-time-format';
 
 const fetcher = url => fetch(url).then(r => r.json())
 
-export function ProposicaoRankingTable({  url, columns, sortByField}) {
+export function RankingTable({  url, columns, sortByField}) {
   const format = timeFormat('%d-%m-%Y');
   const { data, error } = useSWR(url, fetcher);
 
