@@ -14,6 +14,10 @@ import { PrismaAssuntosTemasDeDebateNacional } from "./prisma-assuntos-temas-de-
 import { PrismaAssuntoDeputado } from "./prisma-assuntos-deputado";
 import { PrismaAssuntosAtividadeLegislativa } from "./prisma-assuntos-atividade-legislativa";
 import { ProposicaoTimelineChart } from "./proposicao-timeline-chart";
+import { FeatureHeader } from "./feature";
+import Icon from "@chakra-ui/icon";
+import { FaNewspaper, FaPenFancy, FaVoteYea } from "react-icons/fa";
+import { NoticiaTimelineChart } from "./noticia-timeline-chart";
 
 const fetcher = url => fetch(url).then(r => r.json())
 
@@ -22,19 +26,26 @@ const ReportBody = ({ year }) => {
     <>
       <Box>
         <ReportIntroduction year={year} />
-        <ReportTitle>
-          Propostas legislativas
-        </ReportTitle>
+        <FeatureHeader
+          icon={
+            <Icon as={FaPenFancy} color={'gray.500'} w={20} h={20} />
+          }
+          text="Propostas legislativas"
+        />
 
         <ProposicaoTimelineChart year={year} />
 
         <KpiVisualizacoesFicha year={year} />
 
-        <ReportTitle>
-          Proposições
-        </ReportTitle>
-
         <ProposicaoTemasChart year={year} />
+
+        <FeatureHeader
+          icon={
+            <Icon as={FaVoteYea} color={'gray.500'} w={20} h={20} />
+          }
+          text="Enquetes legislativas"
+        />
+
 
         <ReportTitle>
           Enquetes legislativas
@@ -45,9 +56,12 @@ const ReportBody = ({ year }) => {
         <KpiVotosEnquete year={year} />
         <KpiComentariosEnquete year={year} />
 
-        <ReportTitle>
-          Notícias
-        </ReportTitle>
+        <FeatureHeader
+          icon={
+            <Icon as={FaNewspaper} color={'gray.500'} w={20} h={20} />
+          }
+          text="Notícias"
+        />
 
         <NoticiaTemasChart year={year} />
 
