@@ -4,7 +4,7 @@ import { TimelineChart } from "./timeline-chart";
 
 const fetcher = url => fetch(url).then(r => r.json())
 
-export const ProposicaoTimelineChart = ({ year }) => {
+export const NoticiaTimelineChart = ({ year }) => {
   const { data, error } = useSWR(`http://midias.camara.leg.br/painel-participacao/relatorio-consolidado/?year=${year}`, fetcher);
 
   if (error) return <div>Erro ao carregar.</div>
@@ -17,9 +17,13 @@ export const ProposicaoTimelineChart = ({ year }) => {
           dateAccessor={(d) => d['date']}
           metrics={[
             {
-              label:"Visualizações da ficha de tramitação",
-              accessor: (d) => d['ficha_pageviews_total']
+              label:"Visualizações das matérias do portal",
+              accessor: (d) => d['noticia_pageviews_total']
             },
+            // {
+            //   label:"Comentários aprovados nas matérias do portal",
+            //   accessor: (d) => d['portal_comments_authorized_total']
+            // },
           ]}
         /> : <Skeleton height="20px" />}
     </>

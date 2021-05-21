@@ -62,6 +62,7 @@ const ReportBody = ({ year }) => {
           text="Notícias"
         />
 
+        <NoticiaTimelineChart year={year} />
         <NoticiaTemasChart year={year} />
 
         <ReportTitle>

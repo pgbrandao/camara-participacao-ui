@@ -3,7 +3,7 @@ import { useTable, useSortBy, usePagination } from 'react-table'
 
 import _ from "lodash"
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
-import { Box, Center, Heading, Link, Text, VStack } from '@chakra-ui/layout'
+import { Box, Center, Heading, HStack, Link, Spacer, Text, VStack } from '@chakra-ui/layout'
 import { Button } from '@chakra-ui/button'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import useSWR from 'swr'
@@ -102,12 +102,14 @@ export function RankingTable({  url, columns, sortByField}) {
       */}
       <VStack spacing={5} py={5}>
         <Center>
-          <Button onClick={() => previousPage()} disabled={!canPreviousPage}>
-            <FaArrowLeft />
-          </Button>
-          <Button onClick={() => nextPage()} disabled={!canNextPage}>
-            <FaArrowRight />
-          </Button>
+          <HStack>
+            <Button onClick={() => previousPage()} disabled={!canPreviousPage}>
+              <FaArrowLeft />
+            </Button>
+            <Button onClick={() => nextPage()} disabled={!canNextPage}>
+              <FaArrowRight />
+            </Button>
+          </HStack>
         </Center>
         <Text>
           Página{' '}
