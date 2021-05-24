@@ -19,6 +19,7 @@ import { FeatureHeader } from "./feature";
 import Icon from "@chakra-ui/icon";
 import { FaNewspaper, FaPenFancy, FaVoteYea } from "react-icons/fa";
 import { NoticiaTimelineChart } from "./noticia-timeline-chart";
+import { BiSupport } from "react-icons/bi";
 
 const fetcher = url => fetch(url).then(r => r.json())
 
