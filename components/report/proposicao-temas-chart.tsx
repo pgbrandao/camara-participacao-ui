@@ -56,6 +56,8 @@ export const ProposicaoTemasChart = ({ year }) => {
       <Grid templateColumns="repeat(auto-fit, minmax(320px, 1fr))" gap={6}>
         <GridItem>
           <Box
+            p={6}
+            w={'full'}
             textAlign={'center'}
           >
             <ReportSubTitle>
