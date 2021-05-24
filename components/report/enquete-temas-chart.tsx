@@ -20,10 +20,6 @@ export const EnqueteTemasChart = ({ year }) => {
   const [defaultColor, setDefaultColor] = useState(undefined);
   if (error) return <div>Erro ao carregar.</div>
 
-  console.log('colorLegends');
-  console.log(colorLegends);
-  console.log('colorsMap')
-  console.log(colorsMap)
   const legendGlyphSize = 15;
 
   const columns = [
@@ -58,13 +54,7 @@ export const EnqueteTemasChart = ({ year }) => {
     <>
       <Grid templateColumns="repeat(auto-fit, minmax(320px, 1fr))" gap={6}>
         <GridItem>
-
           <Box
-            // w={'full'}
-            // bg={'gray.50'}
-            // boxShadow={'xl'}
-            // rounded={'lg'}
-            // p={6}
             textAlign={'center'}
           >
             <ReportSubTitle>
@@ -85,7 +75,6 @@ export const EnqueteTemasChart = ({ year }) => {
         </GridItem>
         <GridItem>
           <Box
-            // maxW={'320px'}
             w={'full'}
             bg={'gray.50'}
             boxShadow={'xl'}

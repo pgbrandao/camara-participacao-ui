@@ -65,9 +65,12 @@ const ReportBody = ({ year }) => {
         <NoticiaTimelineChart year={year} />
         <NoticiaTemasChart year={year} />
 
-        <ReportTitle>
-          Central de Comunicação Interativa
-        </ReportTitle>
+        <FeatureHeader
+          icon={
+            <Icon as={BiSupport} color={'gray.500'} w={20} h={20} />
+          }
+          text="Central de Comunicação Interativa"
+        />
 
         <SimpleGrid columns={[1, 2, null, 3]}>
           <Box>
