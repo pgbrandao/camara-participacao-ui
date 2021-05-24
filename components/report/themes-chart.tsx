@@ -6,56 +6,105 @@ import { formatPercentagePrecise, formatPercentage} from '../formattedNumber'
 import useSWR from "swr"
 import { Center, HStack, Text } from "@chakra-ui/layout";
 import * as locale from '../d3/pt-BR-locale.json';
+import { useEffect, useState } from "react";
 
-const ThemesChart = ({ data, dateAccessor, dimensionAccessor, metricAccessor }) => {
+const ThemesChart = ({ data, dateAccessor, dimensionAccessor, metricAccessor, setColorsMap, setColorLegends, setDefaultColor}) => {
   const animationTrajectory = "outside";
   const legendGlyphSize = 15;
+  const [sortedThemesCountArray, setSortedThemesCountArray] = useState(new Array());
+  const [groupedByTheme, setGroupedByTheme] = useState(new Object());
+  const [totalByDate, setTotalByDate] = useState(new Object());
+  const [themesCount, setThemesCount] = useState(new Object());
+  const [colorsList, setColorsList] = useState(new Array<string>());
+  
+  useEffect(() => {
+    const groupedByTheme = data['dimension'].reduce((accumulator, currentValue) => {
+      accumulator[dimensionAccessor(currentValue)] = accumulator[dimensionAccessor(currentValue)] || []
+      accumulator[dimensionAccessor(currentValue)].push(currentValue)
+  
+      return accumulator
+    }, {})
+  
+    const totalByDate = data['dimension'].reduce((accumulator, currentValue) => {
+      accumulator[dateAccessor(currentValue)] = accumulator[dateAccessor(currentValue)] || 0
+      accumulator[dateAccessor(currentValue)] += metricAccessor(currentValue)
+  
+      return accumulator
+    }, {})
+  
+    const themesCount = data['dimension'].reduce((accumulator, currentValue) => {
+      const theme = dimensionAccessor(currentValue)
+      accumulator[theme] = accumulator[theme] || 0
+      accumulator[theme] += metricAccessor(currentValue)
+  
+      return accumulator
+    }, {})
+  
+    const themesCountArray = Object.keys(themesCount).map((key) => { return {'dimension': key, 'metric': themesCount[key]}})
+  
+    const sortedThemesCountArray = themesCountArray.sort((first, second) => {
+      return second['metric'] - first['metric']
+    })
 
-  const groupedByTheme = data['dimension'].reduce((accumulator, currentValue) => {
-    accumulator[dimensionAccessor(currentValue)] = accumulator[dimensionAccessor(currentValue)] || []
-    accumulator[dimensionAccessor(currentValue)].push(currentValue)
+    const sourceColorSet = schemeTableau10
+    const numberOfKeys = Object.keys(themesCount).length
+    const slicedColors = sourceColorSet.slice(0, sourceColorSet.length-1)
+    const extraColors = (numberOfKeys > 0) ? Array(numberOfKeys - slicedColors.length).fill(sourceColorSet[sourceColorSet.length-1]) : [];
+    
+    const colorsList = slicedColors.concat(extraColors);
 
-    return accumulator
-  }, {})
+    const colorsMap = new Object();
+    const colorLegends = new Array();
 
-  const totalByDate = data['dimension'].reduce((accumulator, currentValue) => {
-    accumulator[dateAccessor(currentValue)] = accumulator[dateAccessor(currentValue)] || 0
-    accumulator[dateAccessor(currentValue)] += metricAccessor(currentValue)
+    slicedColors.map((color, i) => {
+      colorsMap[sortedThemesCountArray[i]['dimension']] = color;
+      colorLegends.push({
+        color: color,
+        'dimension': sortedThemesCountArray[i]['dimension'],
+        'metric': sortedThemesCountArray[i]['metric']
+      })
+    });
+    const defaultColor = sourceColorSet[sourceColorSet.length-1];
 
-    return accumulator
-  }, {})
+    setColorsList(colorsList);
+    setColorsMap(colorsMap);  
+    setColorLegends(colorLegends);
+    setDefaultColor(defaultColor);
 
-  const themesCount = data['dimension'].reduce((accumulator, currentValue) => {
-    const theme = dimensionAccessor(currentValue)
-    accumulator[theme] = accumulator[theme] || 0
-    accumulator[theme] += metricAccessor(currentValue)
+    setThemesCount(themesCount);
+    setGroupedByTheme(groupedByTheme);
+    setSortedThemesCountArray(sortedThemesCountArray);
+    setTotalByDate(totalByDate);
+  
+    // console.groupCollapsed('themes')
+    // console.log(groupedByTheme)
+    // console.log(themesCount)
+    // console.log(themesCountArray)
+    // console.log(sortedThemesCountArray)
+    // console.log(slicedColors)
+    // console.log(colorsMap)
+    // console.log(colorLegends)
+    // console.log(defaultColor)
+    // console.groupEnd()
 
-    return accumulator
-  }, {})
-
-  const themesCountArray = Object.keys(themesCount).map((key) => { return {'dimension': key, 'metric': themesCount[key]}})
-
-  const sortedThemesCountArray = themesCountArray.sort((first, second) => {
-    return second['metric'] - first['metric']
-  })
+  }, [data]);
 
   timeFormatDefaultLocale(locale);
   const parseDate = timeParse('%Y-%m-%dT%H:%M:%S');
   const format = timeFormat('%b %Y');  
   const formatDate = (date: string) => format(parseDate(date) as Date);
 
-  const sourceColorSet = schemeTableau10
-  const numberOfKeys = Object.keys(themesCount).length
-  const slicedColors = sourceColorSet.slice(0, sourceColorSet.length-1)
-  const extraColors = Array(numberOfKeys - slicedColors.length).fill(sourceColorSet[sourceColorSet.length-1])
 
-  lightTheme.colors = slicedColors.concat(extraColors)
+
+
+  lightTheme.colors = colorsList;
+
   return (
     <XYChart
       theme={lightTheme}
       xScale={{ type: "band", paddingInner: 0.3 }}
       yScale={{ type: "linear" }}
-      height={400}
+      height={550}
       captureEvents={true}
       // onPointerUp={(d) => {
       //   setAnnotationDataKey(d.key as City);
