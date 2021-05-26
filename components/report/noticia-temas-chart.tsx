@@ -12,7 +12,7 @@ const fetcher = url => fetch(url).then(r => r.json())
 
 export const NoticiaTemasChart = ({ year }) => {
   const [apiParams, setApiParams] = useState(undefined);
-  const { data, error } = useSWR(`http://midias.camara.leg.br/painel-participacao/relatorio-consolidado/?year=${year}`, fetcher);
+  const { data, error } = useSWR(`http://midias.camara.leg.br/painel-participacao/api/relatorio-consolidado/?year=${year}`, fetcher);
 
   const [colorsMap, setColorsMap] = useState(new Object());
   const [colorLegends, setColorLegends] = useState(new Array());

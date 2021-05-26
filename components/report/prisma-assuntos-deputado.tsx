@@ -6,7 +6,7 @@ import { ReportSubTitle } from "./report-subtitle";
 const fetcher = url => fetch(url).then(r => r.json())
 
 export const PrismaAssuntoDeputado = ({ year }) => {
-  const { data, error } = useSWR(`http://midias.camara.leg.br/painel-participacao/relatorio-consolidado/?year=${year}`, fetcher);
+  const { data, error } = useSWR(`http://midias.camara.leg.br/painel-participacao/api/relatorio-consolidado/?year=${year}`, fetcher);
 
   const columns = [
     {
