@@ -7,18 +7,18 @@ import { formattedNumber } from "../formattedNumber";
 
 const fetcher = url => fetch(url).then(r => r.json())
 
-const KpiVisualizacoesFicha = ({ year }) => {
+const KpiDemandasPrisma = ({ year }) => {
   const { data, error } = useSWR(`http://midias.camara.leg.br/painel-participacao/api/relatorio-consolidado/?year=${year}`, fetcher);
 
   if (error) return <div>Erro ao carregar.</div>
 
   return (
     <>
-      <Box p={4} display={{ md: "flex" }} w="100%">
+      <Box p={4} display={{ md: "flex" }}  w="100%">
         <Center>
           <StatGroup>
             <Stat>
-              <StatNumber>{data ? formattedNumber(data['ficha_pageviews']) : <Skeleton height="20px" />}</StatNumber>
+              <StatNumber>{data ? formattedNumber(data['prisma_tickets']) : <Skeleton height="20px" />}</StatNumber>
             </Stat>
           </StatGroup>
         </Center>
@@ -31,10 +31,10 @@ const KpiVisualizacoesFicha = ({ year }) => {
             fontWeight="semibold"
             href="#"
           >
-            Acessos à ficha de tramitação
+            Demandas na Central de Comunicação Interativa
           </Text>
           <Text mt={2} color="gray.500">
-            Cada proposta legislativa tem uma página própria no portal.
+            ...
           </Text>
         </Box>
       </Box>
@@ -42,4 +42,4 @@ const KpiVisualizacoesFicha = ({ year }) => {
   );
 }
 
-export { KpiVisualizacoesFicha }
+export { KpiDemandasPrisma }

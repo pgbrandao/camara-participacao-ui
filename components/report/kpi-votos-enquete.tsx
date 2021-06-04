@@ -23,7 +23,7 @@ const KpiVotosEnquete = ({ year }) => {
           </StatGroup>
         </Center>
         <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }}>
-          <Link
+          <Text
             mt={1}
             display="block"
             fontSize="xl"
@@ -32,7 +32,7 @@ const KpiVotosEnquete = ({ year }) => {
             href="#"
           >
             Votos nas enquetes
-          </Link>
+          </Text>
           <Text mt={2} color="gray.500">
             Cada proposta legislativa em tramitação possui uma enquete, na qual o cidadão pode votar escolher dentre várias opções variando entre "discordo totalmente" e "concordo totalmente".
           </Text>

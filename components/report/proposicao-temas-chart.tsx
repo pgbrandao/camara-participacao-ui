@@ -66,7 +66,8 @@ export const ProposicaoTemasChart = ({ year }) => {
 
             {data ?
               <ThemesChart
-                data={data['proposicoes_temas']}
+                year={year}
+                dataAccessor={(d) => d['proposicoes_temas']}
                 dateAccessor={(d) => d['date']}
                 dimensionAccessor={(d) => d['proposicao__tema__nome']}
                 metricAccessor={(d) => d['ficha_pageviews']}
@@ -103,7 +104,7 @@ export const ProposicaoTemasChart = ({ year }) => {
           </Box>
         </GridItem>
       </Grid>
-      <Wrap spacing="12px" justify="center" p={4} mt={10}>
+      <Wrap spacing="12px" justify="left" p={4} mt={10}>
         {colorLegends.map((colorLegend) => {
           return (
             <WrapItem>

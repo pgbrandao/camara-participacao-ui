@@ -19,7 +19,7 @@ export default function Home() {
       <Head>
         <title>A Participação na Câmara</title>
       </Head>
-      <NavBar showReportsButton={false} />
+      <NavBar />
       <Container maxW={'5xl'} py={16} as={Stack} spacing={12}>
         <Stack spacing={0} align={'center'}>
           <Heading>A Participação na Câmara</Heading>

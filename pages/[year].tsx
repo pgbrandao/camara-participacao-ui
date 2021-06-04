@@ -23,7 +23,7 @@ const RelatorioParticipacao = () => {
       <Head>
         <title>A Participação na Câmara em {year}</title>
       </Head>
-      <NavBar showReportsButton={true} />
+      <NavBar />
       <Container maxW={'5xl'} py={16} as={Stack} spacing={12}>
         <Stack spacing={0} align={'center'}>
           <Heading

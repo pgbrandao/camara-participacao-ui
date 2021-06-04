@@ -30,7 +30,7 @@ export const NoticiaTemasChart = ({ year }) => {
       Cell: props => {
         return (
         <>
-            <Link fontSize="md" href={props.value[1]}>{props.value[0]}</Link><br />
+            <Link fontSize="md" href={props.value[1]}><b>{props.value[0]}</b></Link><br />
             <Text color={props.value[2] in colorsMap ? colorsMap[props.value[2]] : defaultColor} px={0} fontSize="sm"><b>{props.value[2]}</b></Text>
         </>)
       },
@@ -58,7 +58,8 @@ export const NoticiaTemasChart = ({ year }) => {
 
               {data ?
                 <ThemesChart
-                  data={data['noticias_temas']}
+                  year={year}
+                  dataAccessor={(d) => d['noticias_temas']}
                   dateAccessor={(d) => d['date']}
                   dimensionAccessor={(d) => d['noticia__tema_principal__titulo']}
                   metricAccessor={(d) => d['pageviews']}
@@ -97,7 +98,7 @@ export const NoticiaTemasChart = ({ year }) => {
             </Box>
         </GridItem>
       </Grid>
-      <Wrap spacing="12px" justify="center" p={4} mt={10}>
+      <Wrap spacing="12px" justify="left" p={4} mt={10}>
         {colorLegends.map((colorLegend) => {
           return (
             <WrapItem>

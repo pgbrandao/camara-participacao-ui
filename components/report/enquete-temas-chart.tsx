@@ -64,7 +64,8 @@ export const EnqueteTemasChart = ({ year }) => {
             </ReportSubTitle>
             {data ?
               <ThemesChart
-                data={data['enquetes_temas']}
+                year={year}
+                dataAccessor={(d) => d['enquetes_temas']}
                 dateAccessor={(d) => d['date']}
                 dimensionAccessor={(d) => d['proposicao__tema__nome']}
                 metricAccessor={(d) => d['poll_votes']}
@@ -103,7 +104,7 @@ export const EnqueteTemasChart = ({ year }) => {
           </Box>
         </GridItem>
       </Grid>
-      <Wrap spacing="12px" justify="center" p={4} mt={10}>
+      <Wrap spacing="12px" justify="left" p={4} mt={10}>
         {colorLegends.map((colorLegend) => {
           return (
             <WrapItem>

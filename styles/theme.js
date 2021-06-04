@@ -36,8 +36,38 @@ const overrides = {
         "5xl": "48px",
         "6xl": "64px",
     },
+    styles: {
+        global: {    
+            // body: {
+            //     bg: "gray.400",
+            //     color: "white",
+            // },        
+            // a: {
+            //     color: "blue.600",
+            // },
+        }
+    },
+    components: {
+        Link: {
+          variants: {
+            // you can name it whatever you want
+            primary: ({ colorScheme = "blue" }) => ({
+              color: `${colorScheme}.700`,
+              _hover: {
+                color: `${colorScheme}.600`,
+              },
+            }),
+          },
+          defaultProps: {
+            // you can name it whatever you want
+            variant: "primary",
+          },
+        },
+      },    
 }
 
 const customTheme = extendTheme(overrides)
+
+console.log(customTheme)
 
 export default customTheme

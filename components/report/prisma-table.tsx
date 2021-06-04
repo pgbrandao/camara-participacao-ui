@@ -53,13 +53,13 @@ export function PrismaTable({ data, columns, title }) {
   // Render the UI for your table
   return (
     <>
-      <Heading
+      {/* <Heading
           fontSize={{ base: 'lg', sm: 'xl', lg: 'xl' }}
           h={50}
           textAlign='center'
         >
             {title}
-      </Heading>
+      </Heading> */}
       <Table {...getTableProps()}>
         <Thead>
           {headerGroups.map(headerGroup => (

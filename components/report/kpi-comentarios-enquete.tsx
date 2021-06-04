@@ -23,7 +23,7 @@ const KpiComentariosEnquete = ({ year }) => {
           </StatGroup>
         </Center>
         <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }}>
-          <Link
+          <Text
             mt={1}
             display="block"
             fontSize="xl"
@@ -32,7 +32,7 @@ const KpiComentariosEnquete = ({ year }) => {
             href="#"
           >
             Comentários aprovados nas enquetes
-          </Link>
+          </Text>
           <Text mt={2} color="gray.500">
             Para qualificar o seu voto, o cidadão pode registrar pontos positivos ou negativos de cada proposta legislativa. 
           </Text>

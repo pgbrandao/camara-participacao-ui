@@ -8,7 +8,11 @@ import { Center, HStack, Text } from "@chakra-ui/layout";
 import * as locale from '../d3/pt-BR-locale.json';
 import { useEffect, useState } from "react";
 
-const ThemesChart = ({ data, dateAccessor, dimensionAccessor, metricAccessor, setColorsMap, setColorLegends, setDefaultColor}) => {
+const fetcher = url => fetch(url).then(r => r.json())
+
+const ThemesChart = ({ year, dataAccessor, dateAccessor, dimensionAccessor, metricAccessor, setColorsMap, setColorLegends, setDefaultColor}) => {
+  const { data, error } = useSWR(`http://midias.camara.leg.br/painel-participacao/api/relatorio-consolidado/?year=${year}`, fetcher);
+  
   const animationTrajectory = "outside";
   const legendGlyphSize = 15;
   const [sortedThemesCountArray, setSortedThemesCountArray] = useState(new Array());
@@ -18,21 +22,21 @@ const ThemesChart = ({ data, dateAccessor, dimensionAccessor, metricAccessor, se
   const [colorsList, setColorsList] = useState(new Array<string>());
   
   useEffect(() => {
-    const groupedByTheme = data['dimension'].reduce((accumulator, currentValue) => {
+    const groupedByTheme = dataAccessor(data)['dimension'].reduce((accumulator, currentValue) => {
       accumulator[dimensionAccessor(currentValue)] = accumulator[dimensionAccessor(currentValue)] || []
       accumulator[dimensionAccessor(currentValue)].push(currentValue)
   
       return accumulator
     }, {})
   
-    const totalByDate = data['dimension'].reduce((accumulator, currentValue) => {
+    const totalByDate = dataAccessor(data)['dimension'].reduce((accumulator, currentValue) => {
       accumulator[dateAccessor(currentValue)] = accumulator[dateAccessor(currentValue)] || 0
       accumulator[dateAccessor(currentValue)] += metricAccessor(currentValue)
   
       return accumulator
     }, {})
   
-    const themesCount = data['dimension'].reduce((accumulator, currentValue) => {
+    const themesCount = dataAccessor(data)['dimension'].reduce((accumulator, currentValue) => {
       const theme = dimensionAccessor(currentValue)
       accumulator[theme] = accumulator[theme] || 0
       accumulator[theme] += metricAccessor(currentValue)
@@ -67,25 +71,14 @@ const ThemesChart = ({ data, dateAccessor, dimensionAccessor, metricAccessor, se
     const defaultColor = sourceColorSet[sourceColorSet.length-1];
 
     setColorsList(colorsList);
-    setColorsMap(colorsMap);  
-    setColorLegends(colorLegends);
-    setDefaultColor(defaultColor);
-
     setThemesCount(themesCount);
     setGroupedByTheme(groupedByTheme);
     setSortedThemesCountArray(sortedThemesCountArray);
     setTotalByDate(totalByDate);
-  
-    // console.groupCollapsed('themes')
-    // console.log(groupedByTheme)
-    // console.log(themesCount)
-    // console.log(themesCountArray)
-    // console.log(sortedThemesCountArray)
-    // console.log(slicedColors)
-    // console.log(colorsMap)
-    // console.log(colorLegends)
-    // console.log(defaultColor)
-    // console.groupEnd()
+
+    setColorsMap(colorsMap);  
+    setColorLegends(colorLegends);
+    setDefaultColor(defaultColor);
 
   }, [data]);
 
@@ -94,14 +87,12 @@ const ThemesChart = ({ data, dateAccessor, dimensionAccessor, metricAccessor, se
   const format = timeFormat('%b %Y');  
   const formatDate = (date: string) => format(parseDate(date) as Date);
 
-
-
-
-  lightTheme.colors = colorsList;
+  const theme =  {...lightTheme}
+  theme.colors = colorsList;
 
   return (
     <XYChart
-      theme={lightTheme}
+      theme={theme}
       xScale={{ type: "band", paddingInner: 0.3 }}
       yScale={{ type: "linear" }}
       height={550}

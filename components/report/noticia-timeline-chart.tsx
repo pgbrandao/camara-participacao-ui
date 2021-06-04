@@ -17,13 +17,13 @@ export const NoticiaTimelineChart = ({ year }) => {
           dateAccessor={(d) => d['date']}
           metrics={[
             {
-              label:"Visualizações das matérias do portal",
+              label:"Visualizações das notícias do portal",
               accessor: (d) => d['noticia_pageviews_total']
             },
-            // {
-            //   label:"Comentários aprovados nas matérias do portal",
-            //   accessor: (d) => d['portal_comments_authorized_total']
-            // },
+            {
+              label:"Comentários aprovados nas notícias do portal",
+              accessor: (d) => d['portal_comments_authorized_total']
+            },
           ]}
         /> : <Skeleton height="20px" />}
     </>

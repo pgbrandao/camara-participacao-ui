@@ -21,9 +21,15 @@ export const TimelineChart = ({ data, dateAccessor, metrics }) => {
   // const extraColors = Array(numberOfKeys - slicedColors.length).fill(sourceColorSet[sourceColorSet.length-1])
 
   // lightTheme.colors = slicedColors.concat(extraColors)
+  const firstDate = data[0].date;
+  const lastDate = data[data.length-1].date;
+
+  const theme =  {...lightTheme}
+  theme.colors= schemeTableau10
+
   return (
     <XYChart
-      theme={lightTheme}
+      theme={theme}
       xScale={{ type: "band", paddingInner: 0.3 }}
       yScale={{ type: "linear" }}
       height={220}
@@ -47,10 +53,19 @@ export const TimelineChart = ({ data, dateAccessor, metrics }) => {
       <Axis
         key={`time-axis-${animationTrajectory}`}
         orientation="bottom"
-        // numTicks={4}
+        numTicks={1000}
         rangePadding={5}
         // tickFormat={stackOffset === "wiggle" ? () => "" : undefined}
-        tickFormat={formatDate}
+        // tickFormat={formatDate}
+        tickFormat={(date: string) => {
+          if (date == firstDate || date == lastDate) {
+            const d = parseDate(date) as Date;
+            return format(d);
+          } else {
+            return "";
+          }
+        }}
+
       />
       <Axis
         key={`temp-axis-${animationTrajectory}`}
