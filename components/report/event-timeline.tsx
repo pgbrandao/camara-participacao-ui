@@ -25,7 +25,7 @@ const EventTimeline = ({ year }) => {
       />
 
 
-      <iframe src='https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1Pu1BSyQZcVPpuI7FibrNVL3Yb4zxkhpc8oNKU0vUebo&font=Default&lang=pt-br&initial_zoom=2&height=700' width='100%' height='700' webkitallowfullscreen mozallowfullscreen allowfullscreen frameborder='0'></iframe>
+      <iframe src='https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1Pu1BSyQZcVPpuI7FibrNVL3Yb4zxkhpc8oNKU0vUebo&font=Default&lang=pt-br&initial_zoom=2&height=700' width='100%' height='700' frameBorder='0' allowFullScreen={true} ></iframe>
     </>
   );
 }
